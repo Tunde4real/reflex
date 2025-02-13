@@ -1,0 +1,5 @@
+env
+.DS_store
+full_stack_python/__pycache__
+full_stack_python/ui/__pycache__
+__pycache__
