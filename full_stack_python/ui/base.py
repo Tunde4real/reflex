@@ -6,6 +6,7 @@ def base_page(child: rx.Component, hide_navbar=False, *args, **Kwargs) -> rx.Com
     """
     if not isinstance(child, rx.Component):
         child = rx.heading("This is not a valid child element")
+        
     if hide_navbar:
         return rx.container(
             child,
@@ -13,16 +14,15 @@ def base_page(child: rx.Component, hide_navbar=False, *args, **Kwargs) -> rx.Com
             rx.color_mode.button(position="top-right"),    
         )
     
-    return rx.fragment(     # fragment loosens things up a bit
+    return rx.fragment(     # fragment renders nothing (doesn't render a div), loosens things up a bit
         navbar(),
         rx.box(
             child,
             padding = "1em",
-            
             width="100%",
             id="my-content-area-el"
         ),
-        rx.logo(),
+        # rx.logo(),
         rx.color_mode.button(position="bottom-left")
     )
     

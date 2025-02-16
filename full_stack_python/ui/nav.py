@@ -13,7 +13,7 @@ def navbar() -> rx.Component:
             rx.hstack(
                 rx.hstack(
                     rx.image(
-                        src="/logo.jpg",
+                        src="logo.jpg",     # no need to add assets as part of path location
                         width="2.25em",
                         height="auto",
                         border_radius="25%",
@@ -48,7 +48,7 @@ def navbar() -> rx.Component:
             rx.hstack(
                 rx.hstack(
                     rx.image(
-                        src="/logo.jpg",
+                        src="logo.jpg",
                         width="2em",
                         height="auto",
                         border_radius="25%",
@@ -86,5 +86,4 @@ def navbar() -> rx.Component:
         # z_index="5",
         width="100%",
         id = "my-main-nav",
-        
     )
