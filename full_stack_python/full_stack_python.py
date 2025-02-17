@@ -4,7 +4,9 @@ import reflex as rx
 
 from rxconfig import config
 from .ui.base import base_page
-from .pages.about import about_page
+# from .pages.about import about_page
+from . import pages
+from . import navigation
 
 
 class State(rx.State):
@@ -16,6 +18,7 @@ class State(rx.State):
     
     def did_click(self):
         print("Hey I just clicked on something")
+        return rx.redirect(navigation.routes.ABOUT_US_ROUTE)    # redirect to about page
 
 
 def index() -> rx.Component:
@@ -29,14 +32,23 @@ def index() -> rx.Component:
                 rx.code(f"{config.app_name}/{config.app_name}.py"),
                 size="5",
             ),
-            rx.input(default_value=State.label,
-                     on_click = State.did_click,
-                     on_change = State.handle_title_input_change),       
+
+            # rx.button("About Us", on_click=rx.redirect('/about')),
+            # rx.button("About Us", on_click=State.did_click),            # still not the best way
             rx.link(
-                rx.button("Check out our docs!"),
-                href="https://reflex.dev/docs/getting-started/introduction/",
-                is_external=True,
+                rx.button("About Us"), 
+                href=navigation.routes.ABOUT_US_ROUTE
             ),
+
+            # rx.input(default_value=State.label,
+            #          on_click = State.did_click,
+            #          on_change = State.handle_title_input_change),       
+            # rx.link(
+            #     rx.button("Check out our docs!"),
+            #     href="https://reflex.dev/docs/getting-started/introduction/",
+            #     is_external=True,
+            # ),
+
             spacing="5",
             justify="center",
             align="center",
@@ -48,4 +60,8 @@ def index() -> rx.Component:
 
 app = rx.App()
 app.add_page(index)
-app.add_page(about_page, route="/about")
+app.add_page(pages.about_page, route=navigation.routes.ABOUT_US_ROUTE)  #To use like pages.about_page is why we have the code in init.py of pages folder
+app.add_page(pages.pricing_page, route=navigation.routes.PRICING_ROUTE)
+
+
+
