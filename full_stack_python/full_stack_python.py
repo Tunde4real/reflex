@@ -5,8 +5,7 @@ import reflex as rx
 from rxconfig import config
 from .ui.base import base_page
 # from .pages.about import about_page
-from . import pages
-from . import navigation
+from . import pages, navigation, contact
 
 
 class State(rx.State):
@@ -62,6 +61,7 @@ app = rx.App()
 app.add_page(index)
 app.add_page(pages.about_page, route=navigation.routes.ABOUT_US_ROUTE)  #To use like pages.about_page is why we have the code in init.py of pages folder
 app.add_page(pages.pricing_page, route=navigation.routes.PRICING_ROUTE)
+app.add_page(contact.contact_page, route=navigation.routes.CONTACT_US_ROUTE)
 
 
 
