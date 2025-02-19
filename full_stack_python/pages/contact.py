@@ -1,8 +1,51 @@
 import asyncio
+from sqlmodel import Field
+from datetime import datetime, timezone
+import sqlalchemy as sa
 
 import reflex as rx 
 from ..ui.base import base_page
 from ..navigation import routes
+
+
+
+''' After creating your db model as in 
+        class ContactEntryModel(rx.model):
+            first_name: str
+            last_name: str
+            email: str
+            message: str
+    you will then run the following commands:
+        reflex db init
+        reflex db makemigrations
+        reflex migrate
+    
+    databse table is still not created yet. add true to class definition line like
+        class ContactEntryModel(rx.Model, table=True):
+    then run:
+        reflex db makemigrations
+        reflex migrate
+    to save changes.
+
+
+'''
+
+
+class ContactEntryModel(rx.Model, table=True):      #rx.Model not rx.model
+    ''' Whenever you change anything here, you should run "reflex db makemigrations" and "reflex migrate" to update the database table.
+    '''
+    first_name: str
+    last_name: str | None = None        # first way to declare nullable field
+    email: str  = Field(nullable=True)  # second way to declare nullable field
+    message: str
+    created_at: datetime = Field(
+        default_factory=datetime.now(timezone.utc),
+        sa_type=sa.DateTime(timezone=True),
+        sa_column_kwargs={
+            'server_default': sa.func.now(),
+        },
+        nullable=False
+    )
 
 
 class ContactState(rx.State):
@@ -24,9 +67,20 @@ class ContactState(rx.State):
     @rx.event
     async def handle_submit(self, form_data: dict):
         """Handle the form submit."""
-        print(form_data)
+        # print(form_data)
         self.form_data = form_data
-        self.did_submit = True
+        data = {}
+        for k, v in form_data.items():
+            if v == '' or v in None:
+                continue
+            data[k] = v
+
+        with rx.session() as session:
+            db_entry = ContactEntryModel(**data)
+            session.add(db_entry)
+            session.commit()
+            self.did_submit = True
+            yield   # ensure the data is saved and session is closed
 
         # handles the clearing away of thank you message after submittion
         yield
