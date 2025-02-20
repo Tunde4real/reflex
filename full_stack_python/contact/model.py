@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlmodel import Field
 from datetime import datetime, timezone
 import sqlalchemy as sa
@@ -27,19 +29,19 @@ import reflex as rx
 '''
 
 
-class ContactEntryModel(rx.Model, table=True):      #rx.Model not rx.model
-    ''' Whenever you change anything here, you should run "reflex db makemigrations" and "reflex migrate" to update the database table.
-    '''
-    user_id: int | None = None
+class ContactEntryModel(rx.Model, table=True):
+    """Whenever you change anything here, run:
+    'reflex db makemigrations' and 'reflex migrate' to update the database table.
+    """
+    user_id: Optional[int] = None
     first_name: str
-    last_name: str | None = None        # first way to declare nullable field
-    email: str  = Field(nullable=True)  # second way to declare nullable field
+    last_name: Optional[str] = None  # Nullable field using Optional
+    email: Optional[str] = Field(nullable=True)  # Nullable field using Field
     message: str
+    # message: str = Field(default="No message provided")  # Default value using Field
     created_at: datetime = Field(
-        default_factory=datetime.now(timezone.utc),
+        default_factory=lambda: datetime.now(timezone.utc),
         sa_type=sa.DateTime(timezone=True),
-        sa_column_kwargs={
-            'server_default': sa.func.now(),
-        },
-        nullable=False
+        sa_column_kwargs={"server_default": sa.func.now()},
+        nullable=False,
     )

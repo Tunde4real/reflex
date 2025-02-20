@@ -8,7 +8,7 @@ def contact_form() -> rx.Component:
     return  rx.form(
                 rx.vstack(
                         rx.hstack(
-                            rx.input(
+                            rx.input(                   # name value here must match the name in the model
                                 name="first_name",      # better to put name first
                                 placeholder="First Name",
                                 required=True,
@@ -24,13 +24,13 @@ def contact_form() -> rx.Component:
                             width='100%',
                         ),
                         rx.input(
-                            name="Email",
+                            name="email",
                             type="email",
                             placeholder="your email",
                             width='100%',
                         ),
                         rx.text_area(
-                            name="Message",
+                            name="message",
                             placeholder="Your Message",
                             required=True,
                             width='100%',
