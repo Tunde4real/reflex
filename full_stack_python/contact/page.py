@@ -1,8 +1,58 @@
 import reflex as rx 
 from ..ui.base import base_page
 from .state import ContactState
-from . import form
+from . import form, model
 
+
+def contact_entry_list_item(contact: model.ContactEntryModel):
+    return rx.table.row(
+            rx.table.cell(contact.first_name, align="center"),
+            rx.table.cell(contact.last_name, align="center"),
+            rx.table.cell(contact.email, align="center"),
+            rx.table.cell(contact.message, align="center"),
+            rx.table.cell(contact.created_at, align="center"),
+        )                       # be careful of not putting comma here
+    return rx.box(
+        rx.hstack(
+            rx.text(contact.first_name),
+            rx.text(contact.last_name),
+            rx.text(contact.email),
+            rx.text(contact.message),
+            rx.text(contact.created_at),
+            spacing="5",
+            padding='1em',
+            align="center",
+            width="100%",
+        )
+    )
+
+
+def contact_entries_list_page() -> rx.Component:
+    """ 
+    """
+    return base_page(
+        rx.vstack(
+            rx.heading("Contact Entries", size="5"),
+            rx.table.root(
+                rx.table.header(
+                    rx.table.row(
+                        rx.table.column_header_cell("First name", align="center"),
+                        rx.table.column_header_cell("Last name", align="center"),
+                        rx.table.column_header_cell("Email", align="center"),
+                        rx.table.column_header_cell("Message", align="center"),
+                        rx.table.column_header_cell("CreatedAt", align="center"),
+                    ),
+                ),
+                rx.table.body(
+                    rx.foreach(ContactState.entries, contact_entry_list_item),
+                ),
+            ),
+            spacing="5",
+            padding='5em',
+            align="center",
+            min_height="85vh",
+        )
+    )
 
 # @rx.page(
 #         # on_load=ContactState.start_timer, 
@@ -38,6 +88,5 @@ def contact_page() -> rx.Component:
             align="center",
             text_align = "center",
             min_height="85vh",
-            id="my-child",
         )
     return base_page(my_child)
