@@ -5,7 +5,7 @@ import reflex as rx
 from rxconfig import config
 from .ui.base import base_page
 # from .pages.about import about_page
-from . import pages, navigation, contact
+from . import blog, pages, navigation, contact
 
 
 class State(rx.State):
